@@ -47,6 +47,8 @@
   },
   "files": [
     "src/*",
-    "_build/*"
+    "_build/bundle.web.js",
+    "_build/*.wasm",
+    "_build/wasm/web/*"
   ]
 }
