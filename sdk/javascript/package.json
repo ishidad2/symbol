@@ -4,6 +4,7 @@
   "type": "module",
   "description": "JavaScript SDK for Symbol",
   "main": "src/index.js",
+  "browser": "_build/bundle.web.js",
   "scripts": {
     "lint": "eslint .",
     "test": "mocha --full-trace --recursive ./test",
