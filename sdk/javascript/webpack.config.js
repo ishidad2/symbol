@@ -1,43 +1,53 @@
-import WasmPackPlugin from '@wasm-tool/wasm-pack-plugin';
 import webpack from 'webpack';
 import path from 'path';
 import URL from 'url';
 
-export default {
+const outputDirectory = path.resolve(path.dirname(URL.fileURLToPath(import.meta.url)), '_build');
+
+const createBasicConfig = target => ({
 	entry: './src/index.js',
 	mode: process.env.NODE_ENV || 'development',
-	output: {
-		path: path.resolve(path.dirname(URL.fileURLToPath(import.meta.url)), '_build'),
-		filename: 'bundle.js',
-		library: {
-			type: 'module'
-		}
-	},
+	target,
 
-	resolve: {
-		extensions: ['.js'],
-		fallback: {
-			crypto: 'crypto-browserify',
-			stream: 'stream-browserify'
-		}
+	output: {
+		path: outputDirectory,
+		filename: `bundle.${target}.js`
 	},
 
 	plugins: [
-		new webpack.ProvidePlugin({
-			process: 'process/browser',
-			Buffer: ['buffer', 'Buffer']
-		}),
-		new WasmPackPlugin({
-			crateDirectory: path.resolve(path.dirname(URL.fileURLToPath(import.meta.url)), 'wasm'),
-			extraArgs: '--no-typescript',
-			outName: 'symbol_crypto_wasm',
-			outDir: path.resolve(path.dirname(URL.fileURLToPath(import.meta.url)), '_build')
-		}),
-		new webpack.NormalModuleReplacementPlugin(/..\/..\/wasm\/pkg\/symbol_crypto_wasm/, '../../_build/symbol_crypto_wasm.js')
+		new webpack.NormalModuleReplacementPlugin(
+			/..\/..\/_build\/wasm\/node\/symbol_crypto_wasm/,
+			`${outputDirectory}/wasm/${target}/symbol_crypto_wasm.js`
+		)
 	],
 
 	experiments: {
-		asyncWebAssembly: true,
-		outputModule: true
+		asyncWebAssembly: true
+	}
+});
+
+const nodeConfig = createBasicConfig('node');
+const webConfig = createBasicConfig('web');
+
+// ESM module
+webConfig.output.library = { type: 'module' };
+webConfig.experiments.outputModule = true;
+
+// add plugins and resolvers for setting up node to browser mappings
+// not including WasmPackPlugin because we're building WASM as external step
+webConfig.plugins = [
+	new webpack.ProvidePlugin({
+		process: 'process/browser',
+		Buffer: ['buffer', 'Buffer']
+	}),
+	webConfig.plugins[0]
+];
+webConfig.resolve = {
+	extensions: ['.js'],
+	fallback: {
+		crypto: 'crypto-browserify',
+		stream: 'stream-browserify'
 	}
 };
+
+export default [nodeConfig, webConfig];

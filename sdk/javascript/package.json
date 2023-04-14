@@ -13,14 +13,13 @@
     "test:jenkins": "c8 --require mocha --no-clean  --reporter=lcov npm run test",
     "vectors:jenkins": "c8 --require mocha --no-clean  --reporter=lcov npm run vectors",
     "catvectors:jenkins": "c8 --require mocha --no-clean  --reporter=lcov npm run catvectors",
-    "bundle": "webpack",
+    "bundle": "mkdir -p ./_build && webpack",
     "bundle:clean": "rimraf ./_build"
   },
   "keywords": [],
   "author": "Symbol Contributors <contributors@symbol.dev>",
   "license": "MIT",
   "devDependencies": {
-    "@wasm-tool/wasm-pack-plugin": "^1.6.0",
     "assert": "^2.0.0",
     "buffer": "^6.0.3",
     "c8": "^7.13.0",
@@ -45,5 +44,8 @@
     "ripemd160": "^2.0.2",
     "tweetnacl": "^1.0.3"
   },
-  "files": ["src/*", "wasm/pkg/*"]
+  "files": [
+    "src/*",
+    "_build/*"
+  ]
 }

@@ -2,7 +2,7 @@
 
 import {
 	HashMode, crypto_private_sign, crypto_private_verify, crypto_sign_keypair
-} from '../../wasm/pkg/symbol_crypto_wasm.js'; // eslint-disable-line import/no-relative-packages
+} from '../../_build/wasm/node/symbol_crypto_wasm.js'; // eslint-disable-line import/no-relative-packages
 
 const CRYPTO_SIGN_BYTES = 64;
 const CRYPTO_SIGN_PUBLICKEYBYTES = 32;
