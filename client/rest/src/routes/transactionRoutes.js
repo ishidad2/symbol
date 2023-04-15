@@ -81,7 +81,7 @@ module.exports = {
 			return db.transactions(params.group, filters, options)
 				.then(result => routeUtils.createSender(routeResultTypes.transaction).sendPage(res, next)(result));
 		});
-
+		//ここで/transactions/group/:hashの取得を行っている
 		server.get('/transactions/:group/:transactionId', (req, res, next) => {
 			const { params } = req;
 
@@ -94,8 +94,9 @@ module.exports = {
 				throw Error(`invalid length of transaction id '${params.transactionId}'`);
 
 			const transactionId = routeUtils.parseArgument(params, 'transactionId', 'id' === paramType ? 'objectId' : 'hash256');
-
+			console.log(transactionId)
 			const dbTransactionsRetriever = 'id' === paramType ? 'transactionsByIds' : 'transactionsByHashes';
+			console.log(dbTransactionsRetriever)
 			return db[dbTransactionsRetriever](params.group, [transactionId]).then(sender.sendOne(params.transactionId, res, next));
 		});
 

@@ -275,6 +275,26 @@ const routeUtils = {
 				res.send(data);
 				next();
 			};
+		},
+
+		sendJson(res, next) {
+			return data => {
+				if (!data)
+					res.send(errors.createInternalError('error retrieving json'));
+				else
+					res.setHeader('content-type', 'application/json');
+				res.send(data);
+				next();
+			};
+		},
+
+		sendContent(res, next) {
+			return (data, mime) => {
+				res.setHeader('content-type', mime);
+				res.write(data);
+				res.end();
+				next();
+			};
 		}
 	}),
 

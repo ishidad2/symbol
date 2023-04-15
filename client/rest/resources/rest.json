@@ -29,7 +29,7 @@
     "namespace",
     "receipts",
     "restrictions",
-    "transfer"
+    "content"
   ],
 
   "db": {
@@ -51,8 +51,6 @@
     "tlsClientCertificatePath": "/",
     "tlsClientKeyPath": "/",
     "tlsCaCertificatePath": "/",
-
-    "inflationPropertyFilePath": "/",
     "networkPropertyFilePath": "/",
     "nodePropertyFilePath": "/"
   },
@@ -102,6 +100,7 @@
   },
 
   "nodeMetadata": {
-    "_info": "replace the body of this object with custom fields and objects to personalize your node"
+    "_info": "rest/v2.3.4にMetalの参照を追加したバージョンです。",
+    "_cotributor": "ishidad2"
   }
 }
